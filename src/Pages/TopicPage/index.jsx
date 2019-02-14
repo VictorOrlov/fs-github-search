@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import Title from '../Templates/title';
-import NewsPost from '../Templates/news';
-import topicsList from '../topics';
-import Input from '../Templates/input-search';
-import s from './HomePage.module.css';
+import Title from '../../Templates/title';
+import TopNews from '../../Templates/news';
+import s from './TopicPage.module.css';
+import BtnParall from '../../atoms/btnParall/BtnParall';
 
 const BASE_PATCH = 'https://api.github.com';
 const SEARCH_T_PATCH = '/search/repositories';
@@ -13,8 +12,7 @@ const PAGE_HITS = 'per_page=';
 
 export default class HomePage extends Component {
   state = {
-    suggestions: [],
-    searchQuery: '',
+    searchQuery: this.props.location.state.topic,
     result: [],
     hitsPerPage: 10,
   }
@@ -41,59 +39,16 @@ export default class HomePage extends Component {
           loading: false,
           result: response.data.items,
         }));
-      })
-      .catch(() => {
-        this.setState({
-          loading: false,
-          error: true,
-        });
       });
   };
 
-  handleInputChange = ({ target: { value } }) => {
-    let suggestions = [];
-    if (value.length > 0) {
-      const regex = new RegExp(`^${value}`, 'i');
-      suggestions = topicsList.sort().filter(v => regex.test(v));
-    }
-    this.setState(() => ({ suggestions, searchQuery: value }));
-  }
-
-  getSearch = ({ key }) => {
-    if (key === 'Enter') {
-      const { searchQuery, hitsPerPage } = this.state;
-      this.fetch(searchQuery, hitsPerPage, 0);
-    }
-  }
-
-  suggestionsSelected(value) {
-    const { searchQuery, hitsPerPage } = this.state;
-    this.fetch(searchQuery, hitsPerPage, 0);
-    this.setState(() => ({
-      searchQuery: value,
-      suggestions: [],
-    }));
-  }
-
-  renderSuggestions() {
-    const { suggestions } = this.state;
-    if (suggestions.length === 0) {
-      return null;
-    }
-    return (
-      <ul className={s.autocomplite}>
-        {suggestions.map((item, index) => <li key={index} onClick={() => this.suggestionsSelected(item)}>{item}</li>)}
-      </ul>
-    );
-  }
-
   render() {
     const {
-      searchQuery, result, loading, error,
+      result, loading, error,
     } = this.state;
     const renderRepos = Object.keys(result).map(item => (
       <li key={result[item].id}>
-        <NewsPost
+        <TopNews
           url={result[item].html_url}
           fullName={result[item].full_name}
           starsCount={result[item].stargazers_count}
@@ -103,18 +58,10 @@ export default class HomePage extends Component {
         />
       </li>
     ));
-
-    console.log(result);
-
     return (
       <div className={s.wrapper}>
-        <Title title="GitHub Search" />
-        <Input
-          onKeyPress={this.getSearch}
-          onChange={this.handleInputChange}
-          value={searchQuery}
-          renderSuggestions={this.renderSuggestions()}
-        />
+        <Title title="GitHub Result" />
+        <BtnParall link="/">Back to search</BtnParall>
         {loading && 'Loading...'}
         {!loading && !error && result.length === 0 && 'Пусто, не густо'}
         {error && (
