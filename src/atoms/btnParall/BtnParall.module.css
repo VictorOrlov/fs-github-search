@@ -1,0 +1,22 @@
+.button {
+  background:rgba(13, 243, 13, 0.411);
+  box-shadow:5px 5px 0 rgba(0,0,0,.5);
+  display:inline-block;
+  font-size:1em;
+  font-weight: 500;
+  padding:.3em 1em;
+  color:white;
+  text-decoration:none;
+  transform: skew(-20deg);
+  margin: 0 auto !important;
+}
+
+.button:hover {
+  color:white;
+  box-shadow: 0 0 0 ;
+}
+
+.skew_fix{
+  display:inline-block;
+  transform: skew(20deg);
+}
