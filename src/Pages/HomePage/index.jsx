@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Title from '../../Templates/title';
-import Input from '../../Templates/input-search';
+import Title from '../../atoms/title';
+import Input from '../../atoms/input-search';
 import s from './HomePage.module.css';
 
 export default class HomePage extends Component {

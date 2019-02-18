@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import Title from '../../Templates/title';
-import TopNews from '../../Templates/news';
+import Title from '../../atoms/title';
+import TopNews from '../../atoms/news';
 import s from './TopicPage.module.css';
-import BtnParall from '../../atoms/btnParall/BtnParall';
+import BtnParall from '../../atoms/btnParall';
 
 const BASE_PATCH = 'https://api.github.com';
 const SEARCH_T_PATCH = '/search/repositories';
